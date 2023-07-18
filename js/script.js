@@ -109,6 +109,7 @@ posts.forEach((post, i) => {
     </div> 
 </div>`;
 
+
     container.append(postEl);
 
     //se non è presente l'immagine profilo
@@ -119,25 +120,45 @@ posts.forEach((post, i) => {
         divPic.innerHTML = `<div class="no-pic">${initials(post.author.name)}</div>`;
     }
 
+    //variabile globale che mi dice se è stato cliccato il pulsante mi piace
+    let cliccato = false; //di default è spento
+
 
     //cerco all'interno dell'elemento appena creato il bottone e gli applico
     //un ascoltatore
     postEl.querySelector(".like-button").addEventListener("click", function () {
 
-        //this rappresenta il bottone su cui ho cliccato
-        //al click il testo diventa blu
-        this.style.color = "#0A00FF";
 
-        //incremento di 1 il contatore dei like
-        post.likes = post.likes + 1;
-        //recupero il contatore dei like
-        const counterLike = postEl.querySelector(".js-likes-counter");
-        //aggiorno i like al post nel html
-        counterLike.innerHTML = post.likes;
+        //il bottone è spento, lo attivo
+        if (cliccato === false) {
+            cliccato = true; //accendo il bottone
+            //this rappresenta il bottone su cui ho cliccato
+            //al click il testo diventa blu
+            this.style.color = "#0A00FF";
 
-        //pusho nell'array l'id del post a cui è stato messo like
-        idLikedPost.push(post.id);
-        console.log(idLikedPost);
+            //incremento di 1 il contatore dei like
+            post.likes = post.likes + 1;
+            //recupero il contatore dei like
+            const counterLike = postEl.querySelector(".js-likes-counter");
+            //aggiorno i like al post nel html
+            counterLike.innerHTML = post.likes;
+
+            //pusho nell'array l'id del post a cui è stato messo like
+            idLikedPost.push(post.id);
+            console.log(idLikedPost);
+        } else if (cliccato === true) { //il bottone è acceso, lo spengo
+            cliccato = false; //spengo il bottone
+
+            this.style.color = "#404040";
+
+            //decremento di 1 il contatore dei like
+            post.likes = post.likes - 1;
+            //recupero il contatore dei like
+            const counterLike = postEl.querySelector(".js-likes-counter");
+            //aggiorno i like al post nel html
+            counterLike.innerHTML = post.likes;
+        }
+
     });
 });
 
@@ -159,7 +180,7 @@ function formatDate(stringDate) {
 //funzione che restituisce le iniziali del nome dell'utente
 function initials(nameString) {
     const arrName = nameString.split(" ");
-    
+
     let ris = "";
     const firstLetter = arrName[0][0];
     const secFirstLetter = arrName[1][0];
