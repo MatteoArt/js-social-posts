@@ -29,7 +29,7 @@ const posts = [
         id: 3,
         author: {
             name: "George Stone",
-            profile: "https://unsplash.it/300/300?image=67",
+            profile: null,
         },
         date: "2023-01-10",
         text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
@@ -109,27 +109,36 @@ posts.forEach((post, i) => {
     </div> 
 </div>`;
 
-container.append(postEl);
+    container.append(postEl);
 
-//cerco all'interno dell'elemento appena creato il bottone e gli applico
-//un ascoltatore
-postEl.querySelector(".like-button").addEventListener("click", function () {
-    
-    //this rappresenta il bottone su cui ho cliccato
-    //al click il testo diventa blu
-    this.style.color = "#0A00FF";
+    //se non è presente l'immagine profilo
+    if (post.author.profile === null) {
+        //recupero il div contenente l'immagine profilo
+        const divPic = postEl.querySelector(".post-meta__icon");
 
-    //incremento di 1 il contatore dei like
-    post.likes = post.likes + 1;
-    //recupero il contatore dei like
-    const counterLike = postEl.querySelector(".js-likes-counter");
-    //aggiorno i like al post nel html
-    counterLike.innerHTML = post.likes;
+        divPic.innerHTML = `<div class="no-pic">${initials(post.author.name)}</div>`;
+    }
 
-    //pusho nell'array l'id del post a cui è stato messo like
-    idLikedPost.push(post.id);
-    console.log(idLikedPost);
-});
+
+    //cerco all'interno dell'elemento appena creato il bottone e gli applico
+    //un ascoltatore
+    postEl.querySelector(".like-button").addEventListener("click", function () {
+
+        //this rappresenta il bottone su cui ho cliccato
+        //al click il testo diventa blu
+        this.style.color = "#0A00FF";
+
+        //incremento di 1 il contatore dei like
+        post.likes = post.likes + 1;
+        //recupero il contatore dei like
+        const counterLike = postEl.querySelector(".js-likes-counter");
+        //aggiorno i like al post nel html
+        counterLike.innerHTML = post.likes;
+
+        //pusho nell'array l'id del post a cui è stato messo like
+        idLikedPost.push(post.id);
+        console.log(idLikedPost);
+    });
 });
 
 // funzione che formatta la data in formato italiano
@@ -137,12 +146,24 @@ postEl.querySelector(".like-button").addEventListener("click", function () {
 function formatDate(stringDate) {
     const arrDate = stringDate.split("-");
 
-    
+
     let arrDateInverted = [];
     for (let i = arrDate.length - 1; i >= 0; i--) {
         arrDateInverted.push(arrDate[i]);
     }
-    
+
     let output = arrDateInverted.join('/');
     return output;
+}
+
+//funzione che restituisce le iniziali del nome dell'utente
+function initials(nameString) {
+    const arrName = nameString.split(" ");
+    
+    let ris = "";
+    const firstLetter = arrName[0][0];
+    const secFirstLetter = arrName[1][0];
+    ris += (firstLetter + secFirstLetter);
+
+    return ris;
 }
