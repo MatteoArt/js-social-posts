@@ -70,6 +70,8 @@ const posts = [
         likes: 70
     }
 ];
+//array con gli id dei post a cui abbiamo messo like
+let idLikedPost = [];
 
 //ciclo l'array di oggetti e per ogni oggetto genero un post
 posts.forEach((post, i) => {
@@ -108,4 +110,24 @@ posts.forEach((post, i) => {
 </div>`;
 
 container.append(postEl);
+
+//cerco all'interno dell'elemento appena creato il bottone e gli applico
+//un ascoltatore
+postEl.querySelector(".like-button").addEventListener("click", function () {
+    
+    //this rappresenta il bottone su cui ho cliccato
+    //al click il testo diventa blu
+    this.style.color = "#0A00FF";
+
+    //incremento di 1 il contatore dei like
+    post.likes = post.likes + 1;
+    //recupero il contatore dei like
+    const counterLike = postEl.querySelector(".js-likes-counter");
+    //aggiorno i like al post nel html
+    counterLike.innerHTML = post.likes;
+
+    //pusho nell'array l'id del post a cui è stato messo like
+    idLikedPost.push(post.id);
+    console.log(idLikedPost);
+});
 })
