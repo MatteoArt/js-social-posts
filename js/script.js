@@ -87,13 +87,13 @@ posts.forEach((post, i) => {
         </div>
         <div class="post-meta__data">
             <div class="post-meta__author">${post.author.name}</div>
-            <div class="post-meta__time">${post.date}</div>
+            <div class="post-meta__time">${formatDate(post.date)}</div>
         </div>                    
     </div>
 </div>
 <div class="post__text">${post.text}</div>
 <div class="post__image">
-    <img src="${post.image}" alt="img${post.id}">
+    <img src="${post.image}" alt="img${post.id}-${i}">
 </div>
 <div class="post__footer">
     <div class="likes js-likes">
@@ -130,4 +130,19 @@ postEl.querySelector(".like-button").addEventListener("click", function () {
     idLikedPost.push(post.id);
     console.log(idLikedPost);
 });
-})
+});
+
+// funzione che formatta la data in formato italiano
+// formato default esercizio aaaa-mm-gg ---> a formato gg/mm/aaaa  
+function formatDate(stringDate) {
+    const arrDate = stringDate.split("-");
+
+    
+    let arrDateInverted = [];
+    for (let i = arrDate.length - 1; i >= 0; i--) {
+        arrDateInverted.push(arrDate[i]);
+    }
+    
+    let output = arrDateInverted.join('/');
+    return output;
+}
